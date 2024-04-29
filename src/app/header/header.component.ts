@@ -1,10 +1,8 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-//import {MatTypographyModule} from '@angular/material/typography';
-
-
+import { SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +15,9 @@ export class HeaderComponent {
   dashboardTitle = 'Dynamic User Dashboard';
   searchTerm : string = '';
 
+  constructor(private searchService: SearchService) { }
+  
   searchUsers(){
-    return 0;
+    this.searchService.setSearchTerm(this.searchTerm);
   }
 }
