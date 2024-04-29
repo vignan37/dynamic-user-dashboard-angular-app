@@ -1,2 +1,12 @@
-<p>header works!</p>
-<h1>Dynamic User Dashboard</h1>
+<header class="header-container">
+    <span class="title">
+        <h1 class="title-text">{{ dashboardTitle }}</h1>
+    </span>
+    <span class="search-container">
+        <mat-form-field appearance="fill">
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput type="text" [(ngModel)]="searchTerm" (input)="searchUsers()" placeholder="Enter the ID to Search">
+        </mat-form-field>
+    </span>
+      
+</header>
