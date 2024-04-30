@@ -11,8 +11,8 @@ export class UserDetailsService {
 
   constructor(private http: HttpClient) {}
 
-  fetchAllUserDetails(): Observable<any> {
-    return this.http.get(`${this.baseUrl}`);
+  fetchAllUserDetails(pageNumber: number): Observable<any> {
+    return this.http.get(`${this.baseUrl+'?page=${pageNumber'}`);
   }
 
   fetchUserDetails(id: string): Observable<any> {
