@@ -1,13 +1,23 @@
-<mat-paginator [pageSize]="pageSize" [length]="totalUsers" (page)="onPageChange($event)">
-</mat-paginator>
+<div class="container">
+    
+    <div *ngIf="userDetails.id" class="user-details">
+        <img class="user-avatar" [src]="userDetails.avatar" alt="User Image">
+        <div class="user-details-info">
+          <h2 class="user-name">{{ userDetails.first_name }} {{ userDetails.last_name }}</h2>
+          <p class="user-email">{{ userDetails.email }}</p>
+        </div>
+      </div>
 
-<div class="user-card-container">
-  <mat-card *ngFor="let user of users">
-    <mat-card-header>
-      <div mat-card-avatar class="avatar"></div>
-      <mat-card-title>{{ user.first_name }} {{ user.last_name }}</mat-card-title>
-      <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="user.avatar" alt="User Image" [style.max-width.px]="200" [style.max-height.px]="200">
-  </mat-card>
+    <div *ngIf="!userDetails.id" class="user-cards">
+        <div class="user-card" *ngFor="let user of users">
+        <img class="user-avatar" [src]="user.avatar" alt="User Image">
+        <div class="user-details">
+            <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
+            <p class="user-email">{{ user.email }}</p>
+        </div>
+        </div>
+    </div>
+
+  <mat-paginator [pageSize]="pageSize" [length]="totalUsers" (page)="onPageChange($event)">
+</mat-paginator>
 </div>
