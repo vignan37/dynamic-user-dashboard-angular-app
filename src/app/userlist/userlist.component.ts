@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userlist',
@@ -21,9 +22,8 @@ export class UserlistComponent {
   totalUsers !: number ; 
   pageSize ! : number;
   users !: UserDetails [];
-
-  constructor(private searchService: SearchService, private userDetailsService : UserDetailsService, private snackBar: MatSnackBar) {
-    
+  
+  constructor(private searchService: SearchService, private userDetailsService : UserDetailsService, private snackBar: MatSnackBar, private router: Router) {
   }
 
   ngOnInit() {
@@ -89,6 +89,10 @@ export class UserlistComponent {
     //this.pageNumber = event.pageIndex + 1;
     console.log(event.pageIndex + 1 + "index");
     this.getAllUsersData(event.pageIndex + 1);
+  }
+
+  navigateToUserDetails(userId: number){
+    this.router.navigate(['/user-details', userId]);
   }
 
 }
