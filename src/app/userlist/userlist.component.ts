@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { UserDetailsService } from '../services/user-details.service';
-import { UserDetails } from '../models/user-details.model';
+import { UserDetails, UsersData } from '../models/user-details.model';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
@@ -16,13 +16,14 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./userlist.component.scss']
 })
 export class UserlistComponent {
-  userDetails !: UserDetails;
+  userDetails!: UserDetails;
   snackBarRef: any;
-  totalUsers =10 ; 
-  pageSize = 6;
+  totalUsers !: number ; 
+  pageSize ! : number;
   users !: UserDetails [];
 
   constructor(private searchService: SearchService, private userDetailsService : UserDetailsService, private snackBar: MatSnackBar) {
+    
   }
 
   ngOnInit() {
@@ -31,12 +32,16 @@ export class UserlistComponent {
       console.log("insidengoint"+ searchTerm);
     });
     this.getAllUsersData(1);
+    console.log("does details exisit"+this.userDetails);
   }
 
   getAllUsersData(pageNumber : number){
     this.userDetailsService.fetchAllUserDetails(pageNumber).subscribe(
-      (users: any) => {
+      (users: UsersData) => {
         this.users = users.data;
+        this.totalUsers = users.total;
+        this.pageSize = users.per_page;
+        this.userDetails = {} as UserDetails;
         console.log(this.users);
       },
       (error) => {
@@ -46,23 +51,31 @@ export class UserlistComponent {
   }
 
   searchTheUserDetails(searchTerm:string){
-    console.log(searchTerm);
-    this.userDetailsService.fetchUserDetails(searchTerm).subscribe((response) =>{
-      this.userDetails = response.data;
-      if (this.snackBarRef) {
-        //to remove banner if entered a valid id
-        this.snackBarRef.dismiss();
-      }
-      console.log(this.userDetails);
-    },
-    (error) => {
-      this.showErrorMessage('User ID Does not Exist');
-    })
+    console.log("this " +searchTerm + " search term");
+    if(searchTerm.trim() !== ''){
+      this.userDetailsService.fetchUserDetails(searchTerm).subscribe((response) =>{
+        this.userDetails = response.data;
+        //remove all the users
+        this.users = [];
+        if (this.snackBarRef) {
+          //to remove banner if entered a valid id
+          this.snackBarRef.dismiss();
+        }
+        console.log(this.userDetails);
+      },
+      (error) => {
+        this.userDetails = {} as UserDetails;
+        this.showErrorMessage('User ID Does not Exist, enter a valid ID');
+      })
+    }
+    else{
+      this.getAllUsersData(1);
+    }
   }
 
   showErrorMessage(message: string) {
     this.snackBarRef = this.snackBar.open(message, 'Close', {
-      duration: 5000,
+      duration: 0,
     });
     this.snackBarRef
       .onAction()
@@ -74,6 +87,7 @@ export class UserlistComponent {
 
   onPageChange(event: any) {
     //this.pageNumber = event.pageIndex + 1;
+    console.log(event.pageIndex + 1 + "index");
     this.getAllUsersData(event.pageIndex + 1);
   }
 
