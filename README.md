@@ -2,7 +2,8 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
 
-This is the UI
+This is the UI & Site URL : https://vignan37.github.io/dynamic-user-dashboard-angular-app/users
+
 ![image](https://github.com/vignan37/dynamic-user-dashboard-angular-app/assets/37151166/fe198d85-c470-4598-9a26-ab5429852f15)
 
 I used angular material for the UI, This project has search functionality, routing via multiple respective components, interactions and pagination with cards and Fetching api responses through services, and using observables. It was fun developing it.
