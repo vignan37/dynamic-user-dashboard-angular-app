@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserDetailsService {
+  
   private baseUrl = 'https://reqres.in/api/users';
 
   constructor(private http: HttpClient) {}
@@ -15,7 +16,6 @@ export class UserDetailsService {
   }
 
   fetchUserDetails(id: string): Observable<any> {
-    return new Observable<any>;
-    // return this.http.get(`${this.baseUrl}/${id}`);
+    return this.http.get(`${this.baseUrl}/${id}`);
   }
 }
