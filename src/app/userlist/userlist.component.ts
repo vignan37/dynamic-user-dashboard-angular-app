@@ -5,17 +5,22 @@ import { UserDetails } from '../models/user-details.model';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-userlist',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , MatPaginatorModule, MatCardModule],
   templateUrl: './userlist.component.html',
-  styleUrl: './userlist.component.scss'
+  styleUrls: ['./userlist.component.scss']
 })
 export class UserlistComponent {
   userDetails !: UserDetails;
   snackBarRef: any;
+  totalUsers =10 ; 
+  pageSize = 6;
+  users !: UserDetails [];
 
   constructor(private searchService: SearchService, private userDetailsService : UserDetailsService, private snackBar: MatSnackBar) {
   }
@@ -25,6 +30,19 @@ export class UserlistComponent {
       this.searchTheUserDetails(searchTerm);
       console.log("insidengoint"+ searchTerm);
     });
+    this.getAllUsersData(1);
+  }
+
+  getAllUsersData(pageNumber : number){
+    this.userDetailsService.fetchAllUserDetails(pageNumber).subscribe(
+      (users: any) => {
+        this.users = users.data;
+        console.log(this.users);
+      },
+      (error) => {
+        console.error('Error fetching users:', error);
+      }
+    );
   }
 
   searchTheUserDetails(searchTerm:string){
@@ -52,6 +70,11 @@ export class UserlistComponent {
       .subscribe(() => {
         this.snackBarRef.dismiss();
       });
+  }
+
+  onPageChange(event: any) {
+    //this.pageNumber = event.pageIndex + 1;
+    this.getAllUsersData(event.pageIndex + 1);
   }
 
 }
